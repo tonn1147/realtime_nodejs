@@ -35,7 +35,7 @@ topicSchema.pre("save", async (next) => {
   this.name = this.name.toLowerCase();
 
   next();
-})
+});
 
 //message
 const messageSchema = new Schema(
@@ -48,6 +48,7 @@ const messageSchema = new Schema(
     user_id: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      require: true
     },
   },
   {
@@ -61,7 +62,7 @@ const roomSchema = new Schema(
     owner_id: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      require: true
     },
     name: {
       type: String,

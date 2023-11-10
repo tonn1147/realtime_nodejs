@@ -56,3 +56,4 @@ function displayListRoomOrTopic(objs, type) {
     }
   });
 }
+

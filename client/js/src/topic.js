@@ -1,3 +1,4 @@
+"use strict";
 import { serverURL } from "../helpers/config.js";
 import getCookie from "../helpers/getCookies.js";
 

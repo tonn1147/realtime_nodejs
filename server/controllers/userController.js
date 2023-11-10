@@ -20,13 +20,14 @@ const login = asyncHandler(async (req,res) => {
 
     const accessToken = jwt.sign({
         user: {
+            _id: user._id,
             username : user.username,
             password : user.password,
             email : user.email,
         }
     },process.env.ACCESS_TOKEN_SECRET,
     {
-        expiresIn : "1h"
+        expiresIn : "3h"
     });
 
 
@@ -49,7 +50,7 @@ const signup = asyncHandler(async (req,res) => {
     }
 
     const userHashedPws = await bcrypt.hash(password, 10);
-    const user = User.create({
+    const user =await User.create({
         username,
         email,
         password: userHashedPws,
@@ -59,8 +60,8 @@ const signup = asyncHandler(async (req,res) => {
     if (user)
         res.status(200).json({
         message: "User has registered",
-        _id: (await user)._id,
-        hashedPassword: (await user).password,
+        _id: user._id,
+        hashedPassword: await user.password,
         });
 })
 

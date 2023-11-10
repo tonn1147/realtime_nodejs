@@ -166,7 +166,7 @@ const getRoomsByTopic = asyncHandler(async (req,res) => {
     throw Error("Topic not found");
   }
 
-  const rooms = await Room.find({topic_id: topic._id});
+  const rooms = await Room.find({topic_id: existingTopic._id});
   const context = {
     rooms: rooms
   }
@@ -175,6 +175,7 @@ const getRoomsByTopic = asyncHandler(async (req,res) => {
 
 const createRoom = asyncHandler(async (req, res) => {
   const { name, description, topicName} = req.body;
+  console.log(name,description,topicName);
   const context = {};
 
   if (!name || !description || !topicName) {
@@ -182,19 +183,22 @@ const createRoom = asyncHandler(async (req, res) => {
     throw new Error("Missing fields");
   }
 
-  const existingTopic = await Topic.findOne({name: {$regex: topicName, $option: "i"}});
+  const existingTopic = await Topic.findOne({name: {$regex: topicName, $options: "i"}});
   if(!existingTopic) {
     req.status(400)
     throw new Error("Topic not Found!");
   }
 
-  const room = Room.create({
+  const room = await Room.create({
     owner_id: req.user._id,
-    name,
-    description,
-    topic_id: topic._id,
-  },{
-    $push: {participant_id: req.user._id}
+    name: name,
+    description: description,
+    participant_id: [req.user._id],
+    topic_id: [existingTopic._id]
+  });
+
+  existingTopic.updateOne({
+    $push: {room_id: room._id}
   });
 
   if (!room) {
