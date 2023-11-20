@@ -11,10 +11,12 @@ const welcomeUser = document.querySelector(".welcome-user");
 const searchUrl = serverURL + "api/chat/search";
 const username = localStorage.getItem("username");
 
-welcomeUser.innerHTML = `Welcome back! ${username}`;
+
+welcomeUser.innerHTML = `Welcome ${username}`;
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+
   console.log("hello");
   const searchValue = searchInput.value;
   const typeValue = typeInput.value;
@@ -46,6 +48,7 @@ function returnQueryUrlString(url, search, type) {
 }
 
 function displayListRoomOrTopic(objs, type) {
+  resultSection.innerHTML = '';
   objs.forEach((element) => {
     if (type === "room") {
       const html = `<div class="result"><a href="room.html?id=${element._id}">${element.name}</a></div>`;

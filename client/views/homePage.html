@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer type="module" src="../js/src/homePage.js"></script>
+    <link rel="stylesheet" href="../css/homePage.css">
     <title>Rekap</title>
 </head>
 <body>
@@ -17,7 +18,18 @@
         </nav>
     </header>
     <main>
-        <h1 class="wellcome-user"></h1>
+        <div class="container">
+            <h1 class="welcome-user"></h1>
+            <div class="create-btn">
+                <button class="btn create-room-btn" onclick="toggleSection()">
+                    Create Room
+                </button>
+                <button class="btn create-topic-btn" onclick="toggleSection()">
+                    Create Topic
+                </button>
+            </div>
+        </div>
+        <br>
         <div class="search">
             <form method="get" id="form">
                 <input type="text" name="search" id="search" placeholder="What are you looking for">
@@ -31,6 +43,30 @@
         <div class="result">
             
         </div>
+        <div id="create-room" class="create-popup hide">
+            <h3>Create your own room</h3>
+            <br>
+            <form method="post" id="create-room-form">
+                <input type="text" name="name" id="name">
+                <input type="text" name="TopicName" id="TopicName">
+                <input type="text" name="description" id="description">
+                <button type="submit">Create</button>
+            </form>
+        </div>
+        <div id="create-topic" class="create-popup hide">
+            <h3>Create your own Topic</h3>
+            <br>
+            <form method="post" id="create-topic-form">
+                <input type="text" name="name" id="name">
+                <button type="submit">Create</button>
+            </form>
+        </div>
     </main>
+    <script>
+        
+        function toggleSection() {
+
+        }
+    </script>
 </body>
 </html>

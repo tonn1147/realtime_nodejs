@@ -31,11 +31,11 @@ topicSchema.pre("delete", async (next) => {
   next();
 });
 
-topicSchema.pre("save", async (next) => {
-  this.name = this.name.toLowerCase();
+// topicSchema.pre("save", async (next) => {
+//   this.name = this.name.toLowerCase();
 
-  next();
-});
+//   next();
+// });
 
 //message
 const messageSchema = new Schema(

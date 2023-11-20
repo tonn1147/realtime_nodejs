@@ -9,77 +9,79 @@ const roomId = urlParams.get("id");
 const chatSection = document.querySelector(".chat--display-message");
 const form = document.querySelector("form");
 const inputText = document.querySelector(".form__input--text");
-const inputImage = document.querySelector(".form__input--image")(
-  async function () {
-    if (!(await isUser())) redirectTo("login.html");
+const inputImage = document.querySelector(".form__input--image");
 
-    const currentUsername = localStorage.getItem("username");
-    const currentUserId = localStorage.getItem("userId");
+(async function () {
+  if (!(await isUser())) redirectTo("login.html");
 
-    const socket = io("http://localhost:3000/");
-    socket.on("connect", () => {
-      console.log("you are connected with" + socket.id + ":" + currentUserId);
-      displayMessage(
-        `you are connected with id ${socket.id}: ${currentUserId}`,
-        currentUsername
-      );
-      socket.emit("join-room");
-      socket.emit("get-all-messages", roomId);
-    });
+  const currentUsername = localStorage.getItem("username");
+  const currentUserId = localStorage.getItem("userId");
 
-    socket.on("return-all-messages", async (messages) => {
-      messages.foreach((message) => {
-        if (message.type === "image")
-          displayImage(message.context, message.user_id);
-        else displayMessage(message.context, message.user_id);
-      });
-      scrollToBottom();
-    });
+  const socket = io("http://localhost:3000/");
+  socket.on("connect", () => {
+    console.log("you are connected with" + socket.id + ":" + currentUserId);
+    displayMessage(
+      `you are connected with id ${socket.id}: ${currentUserId}`,
+      currentUsername
+    );
+    socket.emit("join-room",roomId);
+    socket.emit("get-all-messages", roomId);
+  });
 
-    socket.on("receiving-message", (message) => {
+  socket.on("return-all-messages",messages => {
+    messages.foreach((message) => {
+      console.log("co message")
       if (message.type === "image")
         displayImage(message.context, message.user_id);
       else displayMessage(message.context, message.user_id);
-      scrollToBottom();
     });
+    scrollToBottom();
+  });
 
-    socket.on("user-left", () => {
-      displayMessage("has left the chat", currentUserId);
-    });
+  socket.on("receiving-message", (message) => {
+    if (message.type === "image")
+      displayImage(message.context, message.user_id);
+    else displayMessage(message.context, message.user_id);
+    scrollToBottom();
+  });
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const reader = new FileReader();
+  socket.on("user-left", () => {
+    displayMessage("has left the chat", currentUserId);
+  });
 
-      const textMessage = inputText.value;
-      const imageMessage = inputImage.files[0];
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const reader = new FileReader();
 
-      if (!textMessage || !imageMessage) {
-        alert("pls enter a message!");
-        return;
-      }
+    const textMessage = inputText.value;
+    const imageMessage = inputImage.files[0];
 
-      if (imageMessage) {
-        reader.readAsDataURL(imageMessage);
-        reader.onload = function () {
-          const img = reader.result;
-          socket.emit("sending-message", img, currentUserId, (type = "image"));
-          imageMessage.value = "";
-        };
-      } else {
-        socket.emit(
-          "sending-message",
-          textMessage,
-          currentUserId,
-          (type = "text")
-        );
-        textMessage.value = "";
-        inputImage.value = "";
-      }
-      // displayMessage(message);
-    });
-  }
-)();
+    if (!textMessage && !imageMessage) {
+      alert("pls enter a message!");
+      return;
+    }
+
+    if (imageMessage) {
+      reader.readAsDataURL(imageMessage);
+      reader.onload = function () {
+        const img = reader.result;
+        socket.emit("sending-message", img, currentUserId,"image",roomId);
+        imageMessage.value = "";
+      };
+    } else {
+      socket.emit(
+        "sending-message",
+        textMessage,
+        currentUserId,
+        "text",
+        roomId
+      );
+      inputText.value = "";
+      inputImage.value = "";
+    }
+    // displayMessage(message);
+  });
+})();
 
 //code start
 
