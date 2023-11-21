@@ -24,6 +24,7 @@ const login = asyncHandler(async (req,res) => {
             username : user.username,
             password : user.password,
             email : user.email,
+            role: user.role
         }
     },process.env.ACCESS_TOKEN_SECRET,
     {

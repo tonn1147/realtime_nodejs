@@ -73,17 +73,17 @@ app.use(errHandler);
 
 //socket io
 io.on("connection", (socket) => {
-  socket.on("get-all-message", (roomId) => {
-    console.log("get sth");
-    Room.find({ _id: roomId }).populate("messages").exec((err,doc)=> {
-      if (err) console.log(err);
-      console.log("get sth");
-      socket.to(roomId).emit("return-all-message", doc.messages);
+  socket.on("get-all-messages", (roomId) => {
+    Room.findOne({ _id: roomId }).populate({path: 'messages', populate:{path: 'user_id',select: 'username'} }).exec().then((doc) => {
+      console.log(roomId);
+      console.log("get sth " + doc.messages[0].context + "and " + doc.messages[0].user_id.username);
+      socket.to(roomId).emit("return-all-messages", doc.messages);
+    }).catch(error => {
+      console.log(error)
     });
   });
 
   socket.on("join-room", (currentRoomId) => {
-    console.log(currentRoomId);
     socket.join(currentRoomId);
   });
 
@@ -97,7 +97,7 @@ io.on("connection", (socket) => {
     });
     message.save().then((messageDoc) => {
       console.log("save");
-      Room.findOne({ _id: roomId }).then((roomDoc) => {
+      Room.findOne({ _id: roomId }).exec().then((roomDoc) => {
           console.log("save" + messageDoc.context);
           if(roomDoc.messages) {
             return roomDoc.updateOne(

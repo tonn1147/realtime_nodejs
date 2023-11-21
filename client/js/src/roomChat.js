@@ -24,13 +24,15 @@ const inputImage = document.querySelector(".form__input--image");
       `you are connected with id ${socket.id}: ${currentUserId}`,
       currentUsername
     );
-    socket.emit("join-room",roomId);
+    console.log(roomId);
+    socket.emit("join-room", roomId);
     socket.emit("get-all-messages", roomId);
   });
 
-  socket.on("return-all-messages",messages => {
-    messages.foreach((message) => {
-      console.log("co message")
+  socket.on("return-all-messages", (messages) => {
+    console.log("runing");
+    messages.forEach((message) => {
+      console.log("co message");
       if (message.type === "image")
         displayImage(message.context, message.user_id);
       else displayMessage(message.context, message.user_id);
@@ -65,7 +67,7 @@ const inputImage = document.querySelector(".form__input--image");
       reader.readAsDataURL(imageMessage);
       reader.onload = function () {
         const img = reader.result;
-        socket.emit("sending-message", img, currentUserId,"image",roomId);
+        socket.emit("sending-message", img, currentUserId, "image", roomId);
         imageMessage.value = "";
       };
     } else {

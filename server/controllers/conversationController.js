@@ -34,7 +34,7 @@ const storage = multer.diskStorage({
 
 // topic controller
 const getTopics = asyncHandler(async (req, res) => {
-  const topics = await Topic.where("owner_id").ne(req.user.user_id);
+  const topics = req.user.role === "user" ? await Topic.where("owner_id").ne(req.user._id) : await Topic.find();
 
   const context = {
     topics: topics,
@@ -73,6 +73,7 @@ const createTopic = asyncHandler(async (req, res) => {
   const topic = await Topic.create({
     name: lowerCaseName,
     owner_id: req.user._id,
+    room_id: [],
   });
   if (!topic) {
     res.status(400);
@@ -140,8 +141,6 @@ const getRooms = asyncHandler(async (req, res) => {
     };
     res.status(200).json(context);
   });
-
-  
 });
 
 const getRoom = asyncHandler(async (req, res) => {

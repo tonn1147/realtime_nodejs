@@ -1,0 +1,475 @@
+openapi: 3.0.3
+info:
+  title: Swagger Rekap - OpenAPI 3.0
+  description: |-
+    This is a sample Rekap realtime Chat application Server based on the expressJs.  You can find out more about me at
+    [https://github.com/tonn1147](https://github.com/tonn1147). 
+    
+    Some document links:
+    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  contact:
+    email: trantonanh2003@gmail.com
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Topic
+    description: All Topics
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: Room
+    description: All Room
+    externalDocs:
+      description: Find out more about our store
+      url: http://swagger.io
+  - name: User
+    description: Operations about user
+  - name: Message
+    description: All message
+paths:
+  /api/chat/topics:
+    get:
+      tags:
+        - Topic
+      summary: Get all created topics
+      description: get all created topics 
+      operationId: getTopics
+      responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    topics: 
+                      type: object
+                      properties:
+                        schema:
+                          $ref: '#/components/schemas/Topic'
+      security:
+        - BearerAuth: []
+  /api/chat/topic:
+    get:
+      tags:
+       - Topic
+      summary: get one topic
+      description: get one topic by Id
+      operationId: getTopic
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          description: a id of a topic
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  topic:
+                    type: object
+                    properties:
+                      schema:
+                        $ref: '#/components/schemas/Topic'
+      security:
+        - BearerAuth: []
+    post:
+      tags:
+        - Topic
+      summary: create topic
+      description: create one topic
+      operationId: createTopic
+      requestBody:
+        description: create one topic
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: nodejs
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    topic:
+                      type: object
+                      properties:
+                        schema:
+                         $ref: '#/components/schemas/Topic'
+      security:
+        - BearerAuth: []
+    put:
+      tags:
+        - Topic
+      summary: update topic
+      description: update one topic
+      operationId: updateTopic
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          description: a id of a topic
+      requestBody:
+        description: update one topic document by id
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: nodejs
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    topic:
+                      type: object
+                      properties:
+                        schema:
+                         $ref: '#/components/schemas/Topic'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Topic
+      summary: delete topic
+      description: delete one topic
+      operationId: deleteTopic
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          description: a id of a topic
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    topic:
+                      type: object
+                      properties:
+                        schema:
+                         $ref: '#/components/schemas/Topic'
+      security:
+        - BearerAuth: []
+  /api/chat/rooms:
+    get:
+      tags:
+        - Room
+      summary: Get all created rooms
+      description: get all created rooms 
+      operationId: getRooms
+      responses:
+          '200':
+            description: Successful
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    rooms: 
+                      type: object
+                      properties:
+                        schema:
+                          $ref: '#/components/schemas/Room'
+      security:
+        - BearerAuth: []
+  /api/chat/room:
+    get:
+      tags:
+       - Room
+      summary: get one room
+      description: get one room by Id
+      operationId: getRoom
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          description: a id of a room
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  room:
+                    type: object
+                    properties:
+                      schema:
+                        $ref: '#/components/schemas/Room'
+      security:
+        - BearerAuth: []
+    post:
+      tags:
+        - Room
+      summary: create 
+      description: create one room
+      operationId: createRoom
+      requestBody:
+        description: create one room
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: nodejs
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    room:
+                      type: object
+                      properties:
+                        schema:
+                         $ref: '#/components/schemas/Room'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Room
+      summary: delete Room
+      description: delete one Room
+      operationId: deleteRoom
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          description: a id of a Room
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    room:
+                      type: object
+                      properties:
+                        schema:
+                         $ref: '#/components/schemas/Room'
+      security:
+        - BearerAuth: []
+  /api/chat/getRoomsByTopic:
+    get:
+      tags:
+        - Room
+      summary: get room by id
+      description: get one room by Id
+      operationId: getRoom
+      parameters:
+        - in: query
+          name: topic
+          schema:
+            type: string
+          description: a id of a room
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  room:
+                    type: object
+                    properties:
+                      schema:
+                        $ref: '#/components/schemas/Room'
+      security:
+        - BearerAuth: []
+  /api/user/login:
+    post:
+      tags:
+        - User
+      summary: login
+      description: login
+      operationId: login
+      requestBody:
+        description: login
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: tran@gmail.com
+                  password:
+                    type: string
+                    example: Tonanh2003
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: user has been in!
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0ZjdmNTg3ZWU4OTIzMGI2NzYzMmEwMSIsInVzZXJuYW1lIjoiVG9ubiIsInBhc3N3b3JkIjoiJDJiJDEwJHBLcVJ5bTR1RVFOcEJuVFJrQ3RBQU9KeVcza3ZuRTFmd2REVU9kZ21YR0c2VXdVQnVNT1BDIiwiZW1haWwiOiJ0cmFuQGdtYWlsLmNvbSJ9LCJpYXQiOjE3MDA1MzI5NzksImV4cCI6MTcwMDU0Mzc3OX0.8pML6O2o2NIhboxbEnXmYRRxI3II3gb6JUVz82YDJa0
+  /api/user/current:
+    get:
+      tags:
+        - User
+      summary: user information
+      description: get currently accessed user information
+      operationId: getUser
+      responses:
+       '200':
+        description: Successful
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Tonn
+                user_id:
+                  type: string
+                  format: MongoId
+                  example: 64f7f587ee89230b67632a01
+      security:
+        - BearerAuth: []
+components:
+  schemas:
+    Topic:
+      type: object
+      properties:
+        id:
+          type: object
+          format: MongoId
+          example: 64f7f587ee89230b67632a01
+        name:
+          type: string
+          example: javascript
+        owner_id:
+          type: object
+          format: MongoId
+          example: 64f7f587ee89230b67632a01
+        room_id:
+          type: array
+          items:
+            type: object
+            format: MongoId
+          example: ['64f7f587ee89230b67632a01','64f7f587ee89230b67632a01']
+      xml:
+        name: Topic
+    Room:
+      type: object
+      properties:
+        id:
+          type: object
+          format: MongoId
+          example: 64f7f587ee89230b67632a01
+        owner_id:
+          type: object
+          format: MongoId
+          example: 64f7f587ee89230b67632a01
+        name:
+          type: string
+          example: discuss
+        description:
+          type: string
+          example: discuss about javascript
+        topic_id:
+          type: array
+          items:
+            type: object
+            format: MongoId
+          example: ['64f7f587ee89230b67632a01','64f7f587ee89230b67632a01']
+          xml:
+            name: topic
+            wrapped: false
+      xml:
+        name: Room 
+        wrapped: false
+    Message:
+      type: object
+      properties:
+        id:
+          type: object
+          format: MongoId
+          example: 64f7f587ee89230b67632a01
+        context:
+          type: string
+          example: Hello Tonn 
+        type:
+          type: string
+          enum:
+            - text
+            - image
+          example: text
+        user_id:
+          type: object
+          xml:
+            name: User
+            wrapped: true
+      xml:
+        name: Message
+    User:
+      type: object
+      properties:
+        id:
+          type: object
+          format: MongoId
+          example: 64f7f587ee89230b67632a01
+        username:
+          type: string
+          example: theUser
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+      xml:
+        name: user
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+

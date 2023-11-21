@@ -6,6 +6,7 @@ const form = document.querySelector("form");
 const emailInput = document.getElementById("email");
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
+const cfPasswordInput = document.getElementById("cf-password")
 
 const signupURL = serverURL + "api/user/signup";
 
@@ -15,8 +16,18 @@ form.addEventListener("submit", (e) => {
   const email = emailInput.value;
   const password = passwordInput.value;
   const username = usernameInput.value;
+  const cfPassword = cfPasswordInput.value;
 
-  if(!email || !password || !username) return;
+  if(!email || !password || !username || !cfPassword){
+    alert("all fields are mandatory!")
+    return;
+  } 
+
+  if(cfPassword !== password) {
+    alert("your confirmation password is not correct!")
+    return;
+  }
+
   const data = {
     email: email,
     username: username,
